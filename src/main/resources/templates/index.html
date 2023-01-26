@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VotesX</title>
+    <meta name="description" content="Předpovídaní výsledků na základě výsledcích v jednotlivých volbách.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bitter:wght@300&family=Playfair+Display:wght@500&display=swap');
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        header {
+            padding-top: 12px;
+            padding-left: 32px;
+            padding-right: 12px;
+            padding-bottom: 12px;
+            color: white;
+            background-color: rgb(40, 40, 40);
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+        }
+        header p {
+            font-family: 'Bitter', serif;
+        }
+        h2 {
+            text-decoration: 3px underline rgb(40, 40, 40);
+            font-family: 'Playfair Display', serif;
+            color: rgb(40, 40, 40)
+        }
+        .results {
+            border-radius: 8px;
+            background-color: rgb(236, 236, 236);
+            margin: 8px auto;
+            position: relative;
+            margin-top: 22px;
+        }
+        .content {
+            max-width: 1050px;
+            margin: 8px auto;
+            padding: 8px;
+        }
+        .name {
+            font-family: 'Bitter', serif;
+            font-size: 3vw;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .content p {
+            font-family: 'Bitter', serif;
+        }
+        .content p a {
+            text-decoration: 1px underline dotted black;
+            color: black;
+        }
+        .stats p {
+            margin: 0px;
+            padding: 0px;
+        }
+        .pre_stats {
+            font-size: 4vw;
+        }
+        .now_stats {
+            font-size: 3vw;
+            color: rgb(50, 50, 50);
+        }
+        .results {
+            background-color: rgb(236, 236, 236);
+            border-radius: 8px;
+            margin: 12px;
+            display: flex;
+        }
+        .candidate-1, .candidate-2 {
+            width: 50%;
+            display: flex;
+        }
+        .candidate-1 {
+            border-right: 1px solid black;
+        }
+        .can-img {
+            width: 65%;
+            display: block;
+            padding: 8px 12px;
+        }
+        .can-img img {
+            width: 100%;
+        }
+        .can-img {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+        }
+        .can-img p {
+            text-align: center;
+        }
+        .stats {
+            width: 35%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .pre_st, .now_st {
+            display: block;
+        }
+        @media(max-width: 1000px) {
+            .pre_st, .can-img p{
+                font-family: 'Bitter', serif;
+                font-size: 3.5vw;
+            }
+            .now_st {
+                font-family: 'Bitter', serif;
+                font-size: 2.5vw;
+            }
+        }
+        
+        @media(min-width: 1001px) {
+            .pre_st {
+                font-size: 42px;
+                font-family: 'Bitter', serif;
+            }
+            .can-img p {
+                font-family: 'Bitter', serif;
+                font-size: 32px;
+            }
+            .now_st {
+                font-family: 'Bitter', serif;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Předpovídaní výsledků voleb prezidenta v roce 2022</h1>
+            <p>Program na předpovídaní výsledku byl vyvinut studentem Markem Urbańczykem. Celý projekt vznikl po výsledcích prvního kola voleb prezidenta roku 2023</p>
+        </header>
+
+        <div class="content">
+            <p>VotesX je projekt který si klade za cíl předpovídat výsledky voleb na základě výsledků v jednotlivých obcích. Projekt nebyl ještě testován v praxi,
+                tedy bude se jednat v sobotu o premiéru a budu velice rád, když se stanete součástí. Chci taky poděkovat všem lidem, kteří mi při tvoření tohoto projektu
+                projektu pomohli. Především silné komunitě na <a href="https://stackoverflow.com">Stackoverflow</a>, také určitě chci poděkovat Markovi Šmahlíkovi za jeho výpomoc.
+            </p>
+            
+            <h2>Aktuální průběh</h2>
+            <div class="results">
+                <span class="candidate-1">
+                    <span class="can-img">
+                        <img src="img/pavel.png">
+                        <p>Petr Pavel</p>
+                    </span>
+                    <span class="stats">
+                        <span class="pre_st" th:text="${pre_stats_1}">0.00%</span>
+                        <span class="now_st" th:text="${now_stats_1}">0.00%</span>
+                    </span>
+                </span>         
+                <span class="candidate-2">           
+                    <span class="stats">
+                        <span class="pre_st" th:text="${pre_stats_2}">0.00%</span>
+                        <span class="now_st" th:text="${now_stats_2}">0.00%</span>
+                    </span>
+                    <span class="can-img">
+                        <img src="img/andrej.png">
+                        <p>Andrej Babiš</p>
+                    </span>
+                </span>
+            </div>
+
+            <h2>Princip fungování programu</h2>
+
+            <p>Jestli jste sledovali průběh voleb prvního kola, tak jste pravděpodobně zaznamenali náskok pana Andreje Babiše na začátku sčítaní. Tento rozdíl byl pravěpodobně způsobený rychlejším sčítáním menších obcí, kde vedl právě pan Andrej Babiš. Tuto myšlenku jsem se snažil uplatnit v praxi. Pomocí statistických údajů, které poskytuje <a href="https://www.czso.cz/">ČSÚ</a> jsem vzal údaje z jednotlivých obcích. Přesněji se jedná o procento sečtených hlasů a hlasy, které v té době dostali jednotlivý kandidáti.
+
+            </p>
+
+            <p>
+                Pro lepší pochopení uvedu jeden krátký příklad. Pokud v Praze bylo při deseti procentech sečtených hlasů v Praze, bylo pro pana Babiše 4000 hlasů a pro
+                pana Petra Pavla 6000 hlasů. Tak lze předpokládat konečný výsledek (100% procent sečtených hlasů) 40000 pro pana Babiše a 60000 hlasů pro pana Pavla v Praze. Tohle jsem udělal
+                pro každou obec a předpovídám tak výsledek voleb.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
