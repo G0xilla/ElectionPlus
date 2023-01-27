@@ -234,7 +234,7 @@
                 document.getElementById("update-mes").textContent = "Váš výsledek bude aktualizován za " + intervalToUpdate + "s";
                 if(intervalToUpdate == 0) {
                     var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open( "GET", "http://localhost/votes-num", false); // false for synchronous request
+                    xmlHttp.open( "GET", "https://urbysoft.xyz/votes-num", false); // false for synchronous request
                     xmlHttp.send();
                     var values = xmlHttp.responseText.split(";");
                     document.getElementById("pre_1").textContent = values[0] + "%";
@@ -246,6 +246,7 @@
                 }
             } catch (error) {
                 console.log(error.message);
+                intervalToUpdate = 30;
             }
 
 
