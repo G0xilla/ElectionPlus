@@ -5,6 +5,7 @@ import com.urbysoft.xmlparser.data.Nuts
 import com.urbysoft.xmlparser.entity.*
 import com.urbysoft.xmlparser.network.StatsService
 import com.urbysoft.xmlparser.parse.XMLStatsParser
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Repository
 import retrofit2.Retrofit
 import retrofit2.create
@@ -80,8 +81,8 @@ class VotesRepository {
             }
         }
 
+
+
         return Pair(regionResultList, externalResult!!)
     }
-
-
 }

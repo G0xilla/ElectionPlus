@@ -1,0 +1,10 @@
+<VYSLEDKY_ZAHRANICI xmlns="http://www.volby.cz/prezident/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.volby.cz/prezident/ pe_vysledky_zahranici.xsd" DATUM_CAS_GENEROVANI="2023-01-27T14:31:26" KOLO="2">
+    <ZAHRANICI>
+        <CELKEM>
+            <HODN_KAND PORADOVE_CISLO="4" HLASY="233"/><!--613.15-->
+            <HODN_KAND PORADOVE_CISLO="7" HLASY="155"/><!--407.89-->
+            <!--0.38-->
+            <UCAST KOLO="2" OKRSKY_CELKEM="110" OKRSKY_ZPRAC="0" OKRSKY_ZPRAC_PROC="0.00" ZAPSANI_VOLICI="0" VYDANE_OBALKY="1000" UCAST_PROC="0.00" ODEVZDANE_OBALKY="1030" PLATNE_HLASY="0" PLATNE_HLASY_PROC="100"/>
+        </CELKEM>
+    </ZAHRANICI>
+</VYSLEDKY_ZAHRANICI>

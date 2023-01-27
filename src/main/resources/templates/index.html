@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VotesX</title>
     <meta name="description" content="Předpovídaní výsledků na základě výsledcích v jednotlivých volbách.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bitter:wght@300&family=Playfair+Display:wght@500&display=swap');
 
@@ -33,7 +33,7 @@
             font-family: 'Playfair Display', serif;
             color: rgb(40, 40, 40)
         }
-        .results {
+        .result-box {
             border-radius: 8px;
             background-color: rgb(236, 236, 236);
             margin: 8px auto;
@@ -70,10 +70,14 @@
             color: rgb(50, 50, 50);
         }
         .results {
+            display: flex;
+        }
+        .comment {
             background-color: rgb(236, 236, 236);
             border-radius: 8px;
-            margin: 12px;
-            display: flex;
+            padding: 6px;
+            margin: 12px auto;
+            margin-top: 2px;
         }
         .candidate-1, .candidate-2 {
             width: 50%;
@@ -117,7 +121,7 @@
                 font-size: 2.5vw;
             }
         }
-        
+
         @media(min-width: 1001px) {
             .pre_st {
                 font-size: 42px;
@@ -132,57 +136,122 @@
                 font-size: 24px;
             }
         }
+
+        @media(min-width: 1001px) {
+            .comment p, .update-box {
+                font-size: 18px;
+                padding-left: 32px;
+            }
+        }
+
+        @media(max-width: 1000px) {
+            .comment p, .update-box {
+                font-size: 2.5vw;
+                text-align: center;
+            }
+
+        }
+        .update-box {
+            text-align: center;
+            padding: 12px;
+        }
+        .update-box p {
+            font-family: 'Bitter', serif;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Předpovídaní výsledků voleb prezidenta v roce 2023</h1>
-            <p>Program na předpovídaní výsledku byl vyvinut studentem Markem Urbańczykem. Celý projekt vznikl po výsledcích prvního kola voleb prezidenta roku 2023</p>
-        </header>
+<div class="container">
+    <header>
+        <h1>Předpovídaní výsledků voleb prezidenta v roce 2023</h1>
+        <p>Program na předpovídaní výsledku byl vyvinut studentem Markem Urbańczykem. Celý projekt vznikl po výsledcích prvního kola voleb prezidenta roku 2023</p>
+    </header>
 
-        <div class="content">
-            <p>VotesX je projekt který si klade za cíl předpovídat výsledky voleb na základě výsledků v jednotlivých obcích. Projekt nebyl ještě testován v praxi,
-                tedy bude se jednat v sobotu o premiéru a budu velice rád, když se stanete součástí. Chci taky poděkovat všem lidem, kteří mi při tvoření tohoto projektu
-                projektu pomohli. Především silné komunitě na <a href="https://stackoverflow.com">Stackoverflow</a>, také určitě chci poděkovat Šimonovi Saganovi za jeho výpomoc.
-            </p>
-            
-            <h2>Aktuální průběh</h2>
-            <div class="results">
-                <span class="candidate-1">
-                    <span class="can-img">
-                        <img src="img/pavel.png">
-                        <p>Petr Pavel</p>
-                    </span>
-                    <span class="stats">
-                        <span class="pre_st" th:text="${pre_stats_1}">0.00%</span>
-                        <span class="now_st" th:text="${now_stats_1}">0.00%</span>
-                    </span>
-                </span>         
-                <span class="candidate-2">           
-                    <span class="stats">
-                        <span class="pre_st" th:text="${pre_stats_2}">0.00%</span>
-                        <span class="now_st" th:text="${now_stats_2}">0.00%</span>
-                    </span>
-                    <span class="can-img">
-                        <img src="img/andrej.png">
-                        <p>Andrej Babiš</p>
-                    </span>
-                </span>
+    <div class="content">
+        <p>VotesX je projekt který si klade za cíl předpovídat výsledky voleb na základě výsledků v jednotlivých obcích. Projekt nebyl ještě testován v praxi,
+            tedy bude se jednat v sobotu o premiéru a budu velice rád, když se stanete součástí. Chci taky poděkovat všem lidem, kteří mi při tvoření tohoto projektu
+            projektu pomohli. Především silné komunitě na <a href="https://stackoverflow.com">Stackoverflow</a>, také určitě chci poděkovat Šimonovi Saganovi za jeho výpomoc.
+        </p>
+
+        <h2>Aktuální průběh</h2>
+
+        <div class="result-box">
+            <div class="update-box">
+                <p id="update-mes">Váš výsledek bude aktualizován za </p>
             </div>
-
-            <h2>Princip fungování programu</h2>
-
-            <p>Jestli jste sledovali průběh voleb prvního kola, tak jste pravděpodobně zaznamenali náskok pana Andreje Babiše na začátku sčítaní. Tento rozdíl byl pravěpodobně způsobený rychlejším sčítáním menších obcí, kde vedl právě pan Andrej Babiš. Tuto myšlenku jsem se snažil uplatnit v praxi. Pomocí statistických údajů, které poskytuje <a href="https://www.czso.cz/">ČSÚ</a> jsem vzal údaje z jednotlivých obcích. Přesněji se jedná o procento sečtených hlasů a hlasy, které v té době dostali jednotlivý kandidáti.
-
-            </p>
-
-            <p>
-                Pro lepší pochopení uvedu jeden krátký příklad. Pokud v Praze bylo při deseti procentech sečtených hlasů v Praze, bylo pro pana Babiše 4000 hlasů a pro
-                pana Petra Pavla 6000 hlasů. Tak lze předpokládat konečný výsledek (100% procent sečtených hlasů) 40000 pro pana Babiše a 60000 hlasů pro pana Pavla v Praze. Tohle jsem udělal
-                pro každou obec a předpovídám tak výsledek voleb.
-            </p>
+            <div class="results">
+                    <span class="candidate-1">
+                        <span class="can-img">
+                            <img src="img/pavel.png">
+                            <p>Petr Pavel</p>
+                        </span>
+                        <span class="stats">
+                            <span id="pre_1" class="pre_st" th:text="${pre_stats_1}">0.00%</span>
+                            <span id="now_1" class="now_st" th:text="${now_stats_1}">0.00%</span>
+                        </span>
+                    </span>
+                <span class="candidate-2">
+                        <span class="stats">
+                            <span id="pre_2" class="pre_st" th:text="${pre_stats_2}">0.00%</span>
+                            <span id="now_2" class="now_st" th:text="${now_stats_2}">0.00%</span>
+                        </span>
+                        <span class="can-img">
+                            <img src="img/andrej.png">
+                            <p>Andrej Babiš</p>
+                        </span>
+                    </span>
+            </div>
+            <div class="comment">
+                <p>V obrázku jsou uvedeny dva výsledky. Na vrchu je predikovaný výsledek pod ním je výsledek aktuální.</p>
+            </div>
         </div>
+
+
+        <h2>Princip fungování programu</h2>
+
+        <p>Jestli jste sledovali průběh voleb prvního kola, tak jste pravděpodobně zaznamenali náskok pana Andreje Babiše na začátku sčítaní. Tento rozdíl byl pravěpodobně způsobený rychlejším sčítáním menších obcí, kde vedl právě pan Andrej Babiš. Tuto myšlenku jsem se snažil uplatnit v praxi. Pomocí statistických údajů, které poskytuje <a href="https://www.czso.cz/">ČSÚ</a> jsem vzal údaje z jednotlivých obcích. Přesněji se jedná o procento sečtených hlasů a hlasy, které v té době dostali jednotlivý kandidáti.
+
+        </p>
+
+        <p>
+            Pro lepší pochopení uvedu jeden krátký příklad. Pokud v Praze bylo při deseti procentech sečtených hlasů v Praze, bylo pro pana Babiše 4000 hlasů a pro
+            pana Petra Pavla 6000 hlasů. Tak lze předpokládat konečný výsledek (100% procent sečtených hlasů) 40000 pro pana Babiše a 60000 hlasů pro pana Pavla v Praze. Tohle jsem udělal
+            pro každou obec a předpovídám tak výsledek voleb.
+        </p>
     </div>
+</div>
+
+<script>
+        fetchDataAndUpdateData();
+        var intervalToUpdate = 30;
+
+        function fetchDataAndUpdateData() {
+
+
+            try {
+                intervalToUpdate -= 1;
+                console.log(intervalToUpdate);
+                document.getElementById("update-mes").textContent = "Váš výsledek bude aktualizován za " + intervalToUpdate + "s";
+                if(intervalToUpdate == 0) {
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open( "GET", "http://localhost/votes-num", false); // false for synchronous request
+                    xmlHttp.send();
+                    var values = xmlHttp.responseText.split(";");
+                    document.getElementById("pre_1").textContent = values[0] + "%";
+                    document.getElementById("now_1").textContent = values[1] + "%";
+                    document.getElementById("pre_2").textContent = values[2] + "%";
+                    document.getElementById("now_2").textContent =  values[3] + "%";
+                    intervalToUpdate = 30;
+                    console.log("value updated");
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+
+
+            console.log("runned");
+            setTimeout(fetchDataAndUpdateData, 1000);
+        }
+    </script>
 </body>
 </html>

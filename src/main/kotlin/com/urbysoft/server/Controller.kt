@@ -6,34 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.ResponseBody
 import java.text.DecimalFormat
 
 @Controller
 class Controller {
     private var predicateCandidateList: List<PredicateCandidate>? = null
+    private var firstCandidatePrePercentage = 0.00
+    private var secondCandidatePrePercentage = 0.00
+    private var firstCandidateNowPercentage = 0.00
+    private var secondCandidateNowPercentage = 0.00
+    private val df = DecimalFormat()
+
+    init {
+        df.maximumFractionDigits = 2
+        df.minimumFractionDigits = 2
+    }
+
 
     @Autowired
     private var repository: VotesRepository? = null
 
-    @GetMapping("/votes")
+    @GetMapping("/")
     fun homePage(model: Model): String {
         if(predicateCandidateList != null) {
-            val df = DecimalFormat()
-            df.maximumFractionDigits = 2
-            df.minimumFractionDigits = 2
-
-
-            val firstCandidate = predicateCandidateList!!.filter { it.number == 4 }[0]
-            val secondCandidate = predicateCandidateList!!.filter {it.number == 7}[0]
-
-            val votesSum = (secondCandidate.votesPredicate + firstCandidate.votesPredicate)
-            val firstCandidatePrePercentage = firstCandidate.votesPredicate.toDouble() / votesSum.toDouble() * 100
-            val secondCandidatePrePercentage = secondCandidate.votesPredicate.toDouble() / votesSum.toDouble() * 100
-
-            val votesSumNow = (secondCandidate.votesNow + firstCandidate.votesNow).toDouble()
-            val firstCandidateNowPercentage = firstCandidate.votesNow.toDouble() / votesSumNow.toDouble() * 100
-            val secondCandidateNowPercentage = secondCandidate.votesNow.toDouble() / votesSumNow.toDouble() * 100
-
             model.addAttribute("pre_stats_1", "${df.format(firstCandidatePrePercentage)}%")
             model.addAttribute("pre_stats_2","${df.format(secondCandidatePrePercentage)}%")
             model.addAttribute("now_stats_1", "${df.format(firstCandidateNowPercentage)}%")
@@ -48,11 +44,16 @@ class Controller {
         return "index"
     }
 
-    fun Float.twoDecimalNumb(): Float {
-        val float = this * 10000
-        val int = float.toInt()
-        return int.toFloat() / 100f
+    @ResponseBody
+    @GetMapping("/votes-num")
+    fun getVotesNum(): String {
+        val df = DecimalFormat()
+        df.maximumFractionDigits = 2
+        df.minimumFractionDigits = 2
+
+        return "$firstCandidatePrePercentage;$secondCandidatePrePercentage;$firstCandidateNowPercentage;$secondCandidateNowPercentage"
     }
+
     @Scheduled(fixedDelay = 10000)
     fun updateData() {
         val predicateVotesCandidateMap = mutableMapOf<Int, Pair<Float, Float>>()
@@ -66,12 +67,12 @@ class Controller {
                         when(municipality.type) {
                             Municipality.Type.MUNICIPALITY_WITH_DISTRICT -> {}
                             else -> {
-                                val envelopGive = municipality.stats.participationStats.envelopGiveSum
+                                val envelopGet = municipality.stats.participationStats.envelopGetSum * municipality.stats.participationStats.votesValidPercentage / 100
                                 var votesSum = 0
                                 municipality.stats.candidateStats.candidates.forEach {
                                     votesSum += it.votes
                                 }
-                                val processPercentage = votesSum.toFloat() / envelopGive.toFloat()
+                                val processPercentage = votesSum.toFloat() / envelopGet.toFloat()
 
                                 municipality.stats.candidateStats.candidates.forEach {
                                     val predicateVotes = (it.votes) / processPercentage
@@ -86,12 +87,12 @@ class Controller {
             }
 
 
-            val envelopGive = pair.second.stats.participationStats.envelopGiveSum
+            val envelopGet = pair.second.stats.participationStats.envelopGetSum * pair.second.stats.participationStats.votesValidPercentage / 100
             var votesSum = 0
             pair.second.stats.candidateStats.candidates.forEach {
                 votesSum += it.votes
             }
-            val processPercentage = votesSum.toFloat() / envelopGive.toFloat()
+            val processPercentage = votesSum.toFloat() / envelopGet.toFloat()
 
             pair.second.stats.candidateStats.candidates.forEach {
                 val predicateVotes = (it.votes) / processPercentage
@@ -110,5 +111,23 @@ class Controller {
             e.printStackTrace()
         }
         println("endefef")
+
+        proceedData()
+    }
+
+    private fun proceedData() {
+
+
+
+        val firstCandidate = predicateCandidateList!!.filter { it.number == 4 }[0]
+        val secondCandidate = predicateCandidateList!!.filter {it.number == 7}[0]
+
+        val votesSum = (secondCandidate.votesPredicate + firstCandidate.votesPredicate)
+        firstCandidatePrePercentage = firstCandidate.votesPredicate.toDouble() / votesSum.toDouble() * 100
+        secondCandidatePrePercentage = secondCandidate.votesPredicate.toDouble() / votesSum.toDouble() * 100
+
+        val votesSumNow = (secondCandidate.votesNow + firstCandidate.votesNow).toDouble()
+        firstCandidateNowPercentage = firstCandidate.votesNow.toDouble() / votesSumNow.toDouble() * 100
+        secondCandidateNowPercentage = secondCandidate.votesNow.toDouble() / votesSumNow.toDouble() * 100
     }
 }
