@@ -236,11 +236,13 @@
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.open( "GET", "https://urbysoft.xyz/votes-num", false); // false for synchronous request
                     xmlHttp.send();
-                    var values = xmlHttp.responseText.split(";");
-                    document.getElementById("pre_1").textContent = values[0] + "%";
-                    document.getElementById("now_1").textContent = values[1] + "%";
-                    document.getElementById("pre_2").textContent = values[2] + "%";
-                    document.getElementById("now_2").textContent =  values[3] + "%";
+                    if(xmlHttp.status == 200) {
+                        var values = xmlHttp.responseText.split(";");
+                        document.getElementById("pre_1").textContent = values[0] + "%";
+                        document.getElementById("now_1").textContent = values[1] + "%";
+                        document.getElementById("pre_2").textContent = values[2] + "%";
+                        document.getElementById("now_2").textContent =  values[3] + "%";
+                    }
                     intervalToUpdate = 30;
                     console.log("value updated");
                 }
