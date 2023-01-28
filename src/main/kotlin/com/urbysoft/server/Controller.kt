@@ -54,7 +54,7 @@ class Controller {
         return "$firstCandidatePrePercentage;$secondCandidatePrePercentage;$firstCandidateNowPercentage;$secondCandidateNowPercentage"
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60_000)
     fun updateData() {
         val predicateVotesCandidateMap = mutableMapOf<Int, Pair<Float, Float>>()
 
