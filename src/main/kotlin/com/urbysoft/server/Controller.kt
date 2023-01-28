@@ -51,7 +51,7 @@ class Controller {
         df.maximumFractionDigits = 2
         df.minimumFractionDigits = 2
 
-        return "$firstCandidatePrePercentage;$secondCandidatePrePercentage;$firstCandidateNowPercentage;$secondCandidateNowPercentage"
+        return "${df.format(firstCandidatePrePercentage)};${df.format(secondCandidatePrePercentage)};${df.format(firstCandidateNowPercentage)};${df.format(secondCandidateNowPercentage)}"
     }
 
     @Scheduled(fixedDelay = 60_000)
