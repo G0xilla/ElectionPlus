@@ -72,7 +72,7 @@ class Controller {
                                 municipality.stats.candidateStats.candidates.forEach {
                                     votesSum += it.votes
                                 }
-                                val processPercentage = votesSum.toFloat() / envelopGet.toFloat()
+                                val processPercentage = (votesSum / (municipality.stats.participationStats.electorateSum * municipality.stats.participationStats.electorateParticipationPercentage)).toFloat()
 
                                 municipality.stats.candidateStats.candidates.forEach {
                                     val predicateVotes = (it.votes) / processPercentage
